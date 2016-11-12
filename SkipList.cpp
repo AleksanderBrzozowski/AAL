@@ -38,7 +38,7 @@ std::string* SkipList::find(int searchKey) const {
     auto x = head;
 
     //start from the top of head nodes
-    for (auto i = head->forward.size(); i > 0; i--) {
+    for (auto i = maxLevel - 1; i > 0; i--) {
         //find last node which key is higher than searchKey
         while(x->forward[i]->key < searchKey)
             x = x->forward[i];
@@ -89,7 +89,8 @@ bool SkipList::erase(int searchKey) {
 
     if (x->key == searchKey) {
         for (auto i = 0; i < x->forward.size() ; i++)
-            x->forward[i] = update[i]->forward[i];
+            update[i]->forward[i] = x->forward[i];
+        delete x;
         return true;
     }
     return false;

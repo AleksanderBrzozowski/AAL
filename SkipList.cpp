@@ -50,7 +50,7 @@ std::string* SkipList::find(int searchKey) const {
 }
 
 
-void SkipList::insert(int searchKey, const std::string &newValue) {
+void SkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     std::vector<Node *> update(maxLevel, nullptr);
     auto x = head;
     for (int i = maxLevel - 1 ; i >= 0; i--) {
@@ -63,7 +63,7 @@ void SkipList::insert(int searchKey, const std::string &newValue) {
     x = x->forward[0];
     //update value if key exists
     if(x->key == searchKey)
-        x->value = newValue;
+        x->value += newValue;
 
     else{
         auto lvl = randomLevel();
@@ -103,28 +103,25 @@ unsigned int SkipList::randomLevel()  {
     return level;
 }
 
-void SkipList::print() const {
-    auto node = head;
+unsigned int SkipList::size() const {
+    auto node = head->forward[0];
+    unsigned int counter = 0;
     while (node != tail) {
-        auto first = node->forward[0];
-        for(auto nestedNode : node->forward) {
-            if(nestedNode == first)
-                std::cout << nestedNode->key << " ";
-        }
-        std::cout << std::endl;
+        ++counter;
         node = node->forward[0];
     }
+    return counter;
 }
 
-std::vector<int> SkipList::getKeysOnSpecificLevel(unsigned int level) const {
-    std::vector<int> keys;
-    if(level < maxLevel) {
-        auto node = head;
-        while (node != tail) {
-            keys.push_back(node->key);
-            node = node->forward[level];
-        }
-    }
-    return keys;
+bool SkipList::isEmpty() const {
+    return head->forward[0] == tail;
+}
+
+std::string SkipList::front() {
+    auto node = head->forward[0];
+    auto valuePtr = find(node->key);
+    std::string value = std::string(*valuePtr);
+    erase(node->key);
+    return value;
 }
 

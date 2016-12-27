@@ -7,24 +7,19 @@
 
 #include <string>
 #include <vector>
+#include "BaseSkipList.h"
 
-class SkipList {
+class SkipList : public BaseSkipList{
 public:
     SkipList();
-
     SkipList(const float probability, const unsigned int maxLevel);
-
     ~SkipList();
-
     std::string* find(int searchKey) const;
-
-    void insert(int searchKey, const std::string &newValue);
-
-    void print() const;
-
-    std::vector<int> getKeysOnSpecificLevel(unsigned int level) const;
-
+    void insertOrUpdate(int searchKey, const std::string &newValue) override;
     bool erase(int searchKey);
+    virtual unsigned int size() const override;
+    virtual bool isEmpty() const override;
+    virtual std::string front() override;
 private:
     static constexpr auto DEFAULT_MAX_LEVEL = 16;
     static constexpr auto DEFAULT_PROBABILITY = 0.5F;

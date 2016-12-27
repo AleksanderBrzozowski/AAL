@@ -14,7 +14,7 @@ public:
     SkipList();
     SkipList(const float probability, const unsigned int maxLevel);
     ~SkipList();
-    std::string* find(int searchKey) const;
+
     void insertOrUpdate(int searchKey, const std::string &newValue) override;
     bool erase(int searchKey);
     virtual unsigned int size() const override;

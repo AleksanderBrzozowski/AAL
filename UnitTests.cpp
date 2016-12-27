@@ -33,6 +33,7 @@ TEST_F(SkipListTest, insertAndTakeFromFront) {
         ASSERT_EQ(SIZE - i, skipList.size());
     }
     ASSERT_TRUE(skipList.isEmpty());
+    EXPECT_THROW(skipList.front(), std::runtime_error);
 }
 
 
@@ -66,9 +67,11 @@ TEST_F(SkipListTest, updateValues) {
         ASSERT_EQ(SIZE - i, skipList.size());
     }
     ASSERT_TRUE(skipList.isEmpty());
+    EXPECT_THROW(skipList.front(), std::runtime_error);
 }
 
 TEST_F(SkipListTest, EmptyList) {
     ASSERT_TRUE(skipList.isEmpty());
     ASSERT_EQ(0, skipList.size());
+    EXPECT_THROW(skipList.front(), std::runtime_error);
 }

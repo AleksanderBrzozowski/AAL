@@ -34,21 +34,6 @@ SkipList::~SkipList() {
     delete node;
 }
 
-std::string* SkipList::find(int searchKey) const {
-    auto x = head;
-
-    //start from the top of head nodes
-    for (auto i = maxLevel - 1; i > 0; i--) {
-        //find last node which key is higher than searchKey
-        while(x->forward[i]->key < searchKey)
-            x = x->forward[i];
-    }
-    //next node after last node with lower key than searchKey
-    //is our searchKey or it is higher than searchKey
-    x = x->forward[0];
-    return x->key == searchKey ? &(x->value) : nullptr;
-}
-
 
 void SkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     std::vector<Node *> update(maxLevel, nullptr);
@@ -118,9 +103,10 @@ bool SkipList::isEmpty() const {
 }
 
 std::string SkipList::front() {
+    if(isEmpty())
+        throw std::runtime_error("No elements in skip list");
     auto node = head->forward[0];
-    auto valuePtr = find(node->key);
-    std::string value = std::string(*valuePtr);
+    std::string value = node->value;
     erase(node->key);
     return value;
 }

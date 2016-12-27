@@ -60,27 +60,6 @@ void SkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     }
 }
 
-bool SkipList::erase(int searchKey) {
-    std::vector<Node *> update(maxLevel, nullptr);
-    auto x = head;
-    for (int i = maxLevel - 1 ; i >= 0; i--) {
-        //find last node which key is higher than searchKey
-        while (x->forward[i]->key < searchKey)
-            x = x->forward[i];
-        update[i] = x;
-    }
-
-    x = x->forward[0];
-
-    if (x->key == searchKey) {
-        for (auto i = 0; i < x->forward.size() ; i++)
-            update[i]->forward[i] = x->forward[i];
-        delete x;
-        return true;
-    }
-    return false;
-}
-
 unsigned int SkipList::randomLevel()  {
     unsigned int level = 1;
     while ((float)std::rand() / RAND_MAX < probability && level < maxLevel)
@@ -105,9 +84,12 @@ bool SkipList::isEmpty() const {
 std::string SkipList::front() {
     if(isEmpty())
         throw std::runtime_error("No elements in skip list");
+
     auto node = head->forward[0];
     std::string value = node->value;
-    erase(node->key);
+    for (unsigned int i = 0; i < node->forward.size(); ++i)
+        head->forward[i] = node->forward[i];
+    delete node;
     return value;
 }
 

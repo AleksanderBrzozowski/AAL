@@ -16,7 +16,7 @@ public:
     ~SkipList();
 
     void insertOrUpdate(int searchKey, const std::string &newValue) override;
-    bool erase(int searchKey);
+
     virtual unsigned int size() const override;
     virtual bool isEmpty() const override;
     virtual std::string front() override;

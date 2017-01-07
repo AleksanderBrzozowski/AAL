@@ -12,8 +12,30 @@ public:
 };
 
 
-TEST_F(SkipListTest, insertAndTakeFromFront) {
-    const unsigned long SIZE = 10000;
+TEST_F(SkipListTest, defaultMaxLevel) {
+    ASSERT_EQ(16, skipList.getMaxLevel());
+}
+
+TEST_F(SkipListTest, specificMaxLevel) {
+    const int MAX_LEVEL = 18;
+    SkipList skipList = SkipList(0.5, MAX_LEVEL);
+    ASSERT_EQ(MAX_LEVEL, skipList.getMaxLevel());
+}
+
+
+TEST_F(SkipListTest, minKey) {
+    skipList.insertOrUpdate(1, "a");
+    skipList.insertOrUpdate(2, "b");
+
+    ASSERT_EQ(1, skipList.getMinKey());
+
+    skipList.insertOrUpdate(0, "c");
+
+    ASSERT_EQ(0, skipList.getMinKey());
+}
+
+TEST_F(SkipListTest, insertAndPeek) {
+    const unsigned long SIZE = 1000;
 
     //insert values
     for (int i = 1; i <= SIZE; i++) {
@@ -38,7 +60,7 @@ TEST_F(SkipListTest, insertAndTakeFromFront) {
 
 
 TEST_F(SkipListTest, updateValues) {
-    const unsigned long SIZE = 10000;
+    const unsigned long SIZE = 1000;
 
     //insert values
     for (int i = 1; i <= SIZE; i++) {

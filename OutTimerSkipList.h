@@ -2,18 +2,18 @@
 // Created by Aleksander on 27.12.2016.
 //
 
-#ifndef AAL_TIMERSKIPLIST_H
-#define AAL_TIMERSKIPLIST_H
+#ifndef AAL_OUTTIMERSKIPLIST_H
+#define AAL_OUTTIMERSKIPLIST_H
 
 
 #include <fstream>
 #include "BaseSkipList.h"
 #include "SkipList.h"
 
-class TimerSkipList : public BaseSkipList {
+class OutTimerSkipList : public BaseSkipList {
 public:
-    TimerSkipList(BaseSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut);
-    virtual ~TimerSkipList();
+    OutTimerSkipList(BaseSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut);
+    virtual ~OutTimerSkipList();
 
     virtual std::string peek() override;
     virtual void insertOrUpdate(int searchKey, const std::string &newValue) override;
@@ -30,4 +30,4 @@ private:
 };
 
 
-#endif //AAL_TIMERSKIPLIST_H
+#endif //AAL_OUTTIMERSKIPLIST_H

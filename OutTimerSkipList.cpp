@@ -2,15 +2,15 @@
 // Created by Aleksander on 27.12.2016.
 //
 
-#include "TimerSkipList.h"
+#include "OutTimerSkipList.h"
 #include <chrono>
 
-TimerSkipList::TimerSkipList(BaseSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut) : skipList(
+OutTimerSkipList::OutTimerSkipList(BaseSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut) : skipList(
         skipList), frontOut(frontOut), insertOrUpdateOut(insertOrUpdateOut) {}
 
-TimerSkipList::~TimerSkipList() {}
+OutTimerSkipList::~OutTimerSkipList() {}
 
-std::string TimerSkipList::peek() {
+std::string OutTimerSkipList::peek() {
     auto t1 = std::chrono::high_resolution_clock::now();
 
     std::string value = skipList.peek();
@@ -22,7 +22,7 @@ std::string TimerSkipList::peek() {
     return value;
 }
 
-void TimerSkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
+void OutTimerSkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     auto t1 = std::chrono::system_clock::now();
 
     skipList.insertOrUpdate(searchKey, newValue);
@@ -32,22 +32,22 @@ void TimerSkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     insertOrUpdateOut << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() << std::endl;
 }
 
-unsigned int TimerSkipList::size() const {
+unsigned int OutTimerSkipList::size() const {
     return skipList.size();
 }
 
-bool TimerSkipList::isEmpty() const {
+bool OutTimerSkipList::isEmpty() const {
     return skipList.isEmpty();
 }
 
-int TimerSkipList::keysOnSpecificLevel(unsigned int level) const {
+int OutTimerSkipList::keysOnSpecificLevel(unsigned int level) const {
     return skipList.keysOnSpecificLevel(level);
 }
 
-int TimerSkipList::getMinKey() const {
+int OutTimerSkipList::getMinKey() const {
     return skipList.getMinKey();
 }
 
-int TimerSkipList::getMaxLevel() {
+int OutTimerSkipList::getMaxLevel() {
     return skipList.getMaxLevel();
 }

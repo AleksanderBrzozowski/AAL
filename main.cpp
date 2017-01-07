@@ -5,7 +5,7 @@
 #include <ctime>
 #include <sstream>
 #include <iostream>
-#include "TimerSkipList.h"
+#include "OutTimerSkipList.h"
 #include "Simulation.h"
 
 void test();
@@ -23,7 +23,7 @@ void test() {
     std::ofstream frontOut("frontOut.txt");
     std::ofstream insertOrUpdateOut("insertOrUpdate.txt");
     SkipList skipList;
-    TimerSkipList timerSkipList(skipList, frontOut, insertOrUpdateOut);
+    OutTimerSkipList timerSkipList(skipList, frontOut, insertOrUpdateOut);
 
     for (int i = 20000; i > 0; --i) {
         skipList.insertOrUpdate(i, "a");

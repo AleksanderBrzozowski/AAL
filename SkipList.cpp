@@ -3,11 +3,8 @@
 //
 
 #include <limits>
-#include <cstdlib>
-#include <string>
-#include <sstream>
+#include <stdexcept>
 #include <iostream>
-#include <fstream>
 #include "SkipList.h"
 
 SkipList::Node::Node(int key, const std::string &value, unsigned int level) :

@@ -7,13 +7,11 @@
 #include <iostream>
 #include "Simulation.h"
 
-Simulation::Simulation(BaseSkipList &skipList, std::ostream &os) : skipList(skipList), os(os), min('a'), max('z'), range(max - min) {}
+Simulation::Simulation(BaseSkipList &skipList, std::ostream &os) : skipList(skipList), os(os), minAction(MIN_ACTION), maxAction(MAX_ACTION), range(maxAction - minAction) {}
 
 
 Simulation::Simulation(BaseSkipList &skipList, std::ostream &os, int actionsToGenerate) : Simulation(skipList, os) {
-    for (int i = actionsToGenerate; i > 0; --i) {
-        skipList.insertOrUpdate(i, std::string(1, randomChar()));
-    }
+    generateActions(skipList, actionsToGenerate);
 }
 
 void Simulation::run() {
@@ -40,7 +38,7 @@ void Simulation::run() {
         }
     }
 
-    os << "Done actions: " << actionCounter <<", added actions: " << addedActionCounter;
+    os << "Done actions: " << actionCounter << ", added actions: " << addedActionCounter << std::endl;
 }
 
 bool Simulation::singleAction(int actualTime, const char &c) const {
@@ -49,11 +47,11 @@ bool Simulation::singleAction(int actualTime, const char &c) const {
         throw std::runtime_error("key is lower than actual time");
     previousActualTime = actualTime;
 
-    if(c < min || c > max)
+    if(c < minAction || c > maxAction)
         throw std::invalid_argument("Unknown action!");
 
-    char sign = (char) rand() % (max - min) + min;
-    bool addAction = sign >= min + 10;
+    char sign = randomChar();
+    bool addAction = sign >= minAction + 10;
 
     if (addAction) {
         int key = rand() % (actualTime + 10000 - actualTime) + actualTime;
@@ -65,7 +63,6 @@ bool Simulation::singleAction(int actualTime, const char &c) const {
 
 void Simulation::showLevelsStatistics() const{
     int size = skipList.size();
-    os << std::endl;
     for (unsigned int i = 0; i < skipList.getMaxLevel(); ++i) {
         os << "level: " << i << ", elements: " << skipList.keysOnSpecificLevel(i)
                   << ", should have: " << size << std::endl;
@@ -74,6 +71,16 @@ void Simulation::showLevelsStatistics() const{
     os << std::endl;
 }
 
-char Simulation::randomChar() const{
+char Simulation::randomChar() const {
+    return randomChar(minAction, maxAction);
+}
+
+void Simulation::generateActions(BaseSkipList &skipList, int actionsToGenerate) {
+    for (int i = actionsToGenerate; i > 0; --i) {
+        skipList.insertOrUpdate(i, std::string(1, randomChar(MIN_ACTION, MAX_ACTION)));
+    }
+}
+
+char Simulation::randomChar(char min, char max) {
     return (char) (std::rand() % (max - min) + min);
 }

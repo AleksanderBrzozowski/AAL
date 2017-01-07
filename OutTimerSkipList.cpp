@@ -5,49 +5,54 @@
 #include "OutTimerSkipList.h"
 #include <chrono>
 
-OutTimerSkipList::OutTimerSkipList(BaseSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut) : skipList(
+OutTimerSkipList::OutTimerSkipList(BaseTimerSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut) : timerSkipList(
         skipList), frontOut(frontOut), insertOrUpdateOut(insertOrUpdateOut) {}
 
 OutTimerSkipList::~OutTimerSkipList() {}
 
 std::string OutTimerSkipList::peek() {
-    auto t1 = std::chrono::high_resolution_clock::now();
-
-    std::string value = skipList.peek();
-
-    auto t2 = std::chrono::high_resolution_clock::now();
-
-    frontOut << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() << std::endl;
-
+    std::string value = timerSkipList.peek();
+    frontOut << getLastPeekTime() << std::endl;
     return value;
 }
 
 void OutTimerSkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
-    auto t1 = std::chrono::system_clock::now();
-
-    skipList.insertOrUpdate(searchKey, newValue);
-
-    auto t2 = std::chrono::system_clock::now();
-
-    insertOrUpdateOut << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() << std::endl;
+    timerSkipList.insertOrUpdate(searchKey, newValue);
+    insertOrUpdateOut << getLastInsertOrUpdateTime() << std::endl;
 }
 
 unsigned int OutTimerSkipList::size() const {
-    return skipList.size();
+    return timerSkipList.size();
 }
 
 bool OutTimerSkipList::isEmpty() const {
-    return skipList.isEmpty();
+    return timerSkipList.isEmpty();
 }
 
 int OutTimerSkipList::keysOnSpecificLevel(unsigned int level) const {
-    return skipList.keysOnSpecificLevel(level);
+    return timerSkipList.keysOnSpecificLevel(level);
 }
 
 int OutTimerSkipList::getMinKey() const {
-    return skipList.getMinKey();
+    return timerSkipList.getMinKey();
 }
 
 int OutTimerSkipList::getMaxLevel() {
-    return skipList.getMaxLevel();
+    return timerSkipList.getMaxLevel();
+}
+
+double OutTimerSkipList::getLastInsertOrUpdateTime() const {
+    return timerSkipList.getLastInsertOrUpdateTime();
+}
+
+double OutTimerSkipList::getLastPeekTime() const {
+    return timerSkipList.getLastPeekTime();
+}
+
+double OutTimerSkipList::getAverageInsertOrUpdateTime() const {
+    return timerSkipList.getAverageInsertOrUpdateTime();
+}
+
+double OutTimerSkipList::getAveragePeekTime() const {
+    return timerSkipList.getAveragePeekTime();
 }

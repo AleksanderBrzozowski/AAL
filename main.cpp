@@ -7,40 +7,42 @@
 #include <iostream>
 #include "OutTimerSkipList.h"
 #include "Simulation.h"
+#include "TimerSkipList.h"
 
-void test();
+void test2();
+
+void test1();
 
 int main() {
-    SkipList skipList;
     srand((unsigned int) time(nullptr));
 
-    Simulation simulation(skipList, std::cout, 100000);
-    simulation.run();
+    test2();
     return 0;
 }
 
-void test() {
+void test1() {
+    SkipList skipList;
+
+    Simulation simulation(skipList, std::cout, 100000);
+    simulation.run();
+}
+
+void test2() {
     std::ofstream frontOut("frontOut.txt");
     std::ofstream insertOrUpdateOut("insertOrUpdate.txt");
+    std::ofstream actions("actions.txt");
+
     SkipList skipList;
-    OutTimerSkipList timerSkipList(skipList, frontOut, insertOrUpdateOut);
+    TimerSkipList timerSkipList(skipList);
+    OutTimerSkipList outTimerSkipList(timerSkipList, frontOut, insertOrUpdateOut);
 
-    for (int i = 20000; i > 0; --i) {
-        skipList.insertOrUpdate(i, "a");
-    }
+    Simulation::generateActions(skipList, 100000);
 
-    int size = skipList.size();
-    for (unsigned int i = 0; i < 15; ++i) {
-        int valuesOnLevel = skipList.keysOnSpecificLevel(i);
-        std::cout << valuesOnLevel << " percent: " << (float) valuesOnLevel / size * 100 << "%" << std::endl;
+    Simulation simulation(outTimerSkipList, actions);
+    simulation.run();
 
-    }
-
-
-    timerSkipList.insertOrUpdate(1205410, "a");
-    timerSkipList.insertOrUpdate(12054504, "a");
-    timerSkipList.insertOrUpdate(1534524504, "a");
-
+    actions << "Average peek time: " << timerSkipList.getAveragePeekTime() << std::endl;
+    actions << "Average insert or update time: " << timerSkipList.getLastInsertOrUpdateTime() << std::endl;
 
     frontOut.close();
     insertOrUpdateOut.close();

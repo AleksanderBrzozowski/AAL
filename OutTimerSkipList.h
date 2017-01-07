@@ -9,10 +9,11 @@
 #include <fstream>
 #include "BaseSkipList.h"
 #include "SkipList.h"
+#include "BaseTimerSkipList.h"
 
-class OutTimerSkipList : public BaseSkipList {
+class OutTimerSkipList : public BaseTimerSkipList {
 public:
-    OutTimerSkipList(BaseSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut);
+    OutTimerSkipList(BaseTimerSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut);
     virtual ~OutTimerSkipList();
 
     virtual std::string peek() override;
@@ -22,9 +23,13 @@ public:
     virtual int keysOnSpecificLevel(unsigned int level) const override;
     virtual int getMinKey() const override;
     virtual int getMaxLevel() override;
+    virtual double getLastInsertOrUpdateTime() const override;
+    virtual double getLastPeekTime() const override;
+    virtual double getAverageInsertOrUpdateTime() const override;
+    virtual double getAveragePeekTime() const override;
 
 private:
-    BaseSkipList &skipList;
+    BaseTimerSkipList &timerSkipList;
     std::ofstream &frontOut;
     std::ofstream &insertOrUpdateOut;
 };

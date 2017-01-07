@@ -17,7 +17,12 @@ std::string TimerSkipList::peek() {
     auto t2 = std::chrono::high_resolution_clock::now();
     lastPeekTime = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
 
-    averagePeekTime = isFirst ? lastPeekTime : (averagePeekTime + lastPeekTime) / 2;
+    if (isFirst) {
+        averagePeekTime = lastPeekTime;
+        isFirst = false;
+    }
+    else
+        averagePeekTime = (averagePeekTime + lastPeekTime) / 2;
 
     return value;
 }
@@ -34,8 +39,12 @@ void TimerSkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     auto t2 = std::chrono::high_resolution_clock::now();
     lastInsertOrUpdateTime = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
 
-    averageInsertOrUpdateTime = isFirst ? lastInsertOrUpdateTime :
-                                (averageInsertOrUpdateTime + lastInsertOrUpdateTime) / 2;
+    if (isFirst) {
+        averageInsertOrUpdateTime = lastInsertOrUpdateTime;
+        isFirst = false;
+    }
+    else
+        averageInsertOrUpdateTime = (averageInsertOrUpdateTime + lastInsertOrUpdateTime) / 2;
 }
 
 unsigned int TimerSkipList::size() const {

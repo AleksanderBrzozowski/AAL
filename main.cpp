@@ -16,7 +16,7 @@ void test3();
 int main() {
     srand((unsigned int) time(nullptr));
 
-    test3();
+    test2();
     return 0;
 }
 
@@ -42,7 +42,7 @@ void test2() {
     simulation.run();
 
     actions << "Average peek time: " << timerSkipList.getAveragePeekTime() << std::endl;
-    actions << "Average insert or update time: " << timerSkipList.getLastInsertOrUpdateTime() << std::endl;
+    actions << "Average insert or update time: " << timerSkipList.getAverageInsertOrUpdateTime() << std::endl;
 
     frontOut.close();
     insertOrUpdateOut.close();
@@ -58,6 +58,6 @@ void test3() {
     simulation.run();
 
     std::cout << "Average peek time: " << timerSkipList.getAveragePeekTime() << std::endl;
-    std::cout << "Average insert or update time: " << timerSkipList.getLastInsertOrUpdateTime() << std::endl;
+    std::cout << "Average insert or update time: " << timerSkipList.getAverageInsertOrUpdateTime() << std::endl;
 }
 

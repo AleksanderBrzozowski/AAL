@@ -2,11 +2,24 @@
 
 #include <fstream>
 #include <cstdlib>
+#include <ctime>
 #include <sstream>
 #include <iostream>
 #include "TimerSkipList.h"
+#include "Simulation.h"
+
+void test();
 
 int main() {
+    SkipList skipList;
+    srand((unsigned int) time(nullptr));
+
+    Simulation simulation(skipList, std::cout, 100000);
+    simulation.run();
+    return 0;
+}
+
+void test() {
     std::ofstream frontOut("frontOut.txt");
     std::ofstream insertOrUpdateOut("insertOrUpdate.txt");
     SkipList skipList;
@@ -31,5 +44,4 @@ int main() {
 
     frontOut.close();
     insertOrUpdateOut.close();
-    return 0;
 }

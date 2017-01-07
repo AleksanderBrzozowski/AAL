@@ -9,14 +9,14 @@
 #include "Simulation.h"
 #include "TimerSkipList.h"
 
-void test2();
-
 void test1();
+void test2();
+void test3();
 
 int main() {
     srand((unsigned int) time(nullptr));
 
-    test2();
+    test3();
     return 0;
 }
 
@@ -47,3 +47,17 @@ void test2() {
     frontOut.close();
     insertOrUpdateOut.close();
 }
+
+void test3() {
+    SkipList skipList;
+    Simulation::generateActions(skipList, 100000);
+    TimerSkipList timerSkipList(skipList);
+
+    Simulation simulation(skipList, std::cout);
+
+    simulation.run();
+
+    std::cout << "Average peek time: " << timerSkipList.getAveragePeekTime() << std::endl;
+    std::cout << "Average insert or update time: " << timerSkipList.getLastInsertOrUpdateTime() << std::endl;
+}
+

@@ -13,6 +13,8 @@ void test1();
 void test2();
 void test3();
 
+void averageInfo(std::ostream &os, const TimerSkipList &timerSkipList);
+
 int main() {
     srand((unsigned int) time(nullptr));
 
@@ -41,8 +43,7 @@ void test2() {
     Simulation simulation(outTimerSkipList, actions);
     simulation.run();
 
-    actions << "Average peek time: " << timerSkipList.getAveragePeekTime() << std::endl;
-    actions << "Average insert or update time: " << timerSkipList.getAverageInsertOrUpdateTime() << std::endl;
+    averageInfo(actions, timerSkipList);
 
     frontOut.close();
     insertOrUpdateOut.close();
@@ -57,7 +58,11 @@ void test3() {
 
     simulation.run();
 
-    std::cout << "Average peek time: " << timerSkipList.getAveragePeekTime() << std::endl;
-    std::cout << "Average insert or update time: " << timerSkipList.getAverageInsertOrUpdateTime() << std::endl;
+    averageInfo(std::cout, timerSkipList);
+}
+
+void averageInfo(std::ostream &os, const TimerSkipList &timerSkipList) {
+    os << "Average peek time: " << timerSkipList.getAveragePeekTime() << std::endl;
+    os << "Average insert or update time: " << timerSkipList.getAverageInsertOrUpdateTime() << std::endl;
 }
 

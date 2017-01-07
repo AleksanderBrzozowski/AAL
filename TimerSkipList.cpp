@@ -39,3 +39,7 @@ unsigned int TimerSkipList::size() const {
 bool TimerSkipList::isEmpty() const {
     return skipList.isEmpty();
 }
+
+int TimerSkipList::keysOnSpecificLevel(unsigned int level) const {
+    return skipList.keysOnSpecificLevel(level);
+}

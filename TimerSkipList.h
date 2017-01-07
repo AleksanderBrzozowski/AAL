@@ -19,6 +19,8 @@ public:
     virtual void insertOrUpdate(int searchKey, const std::string &newValue) override;
     virtual unsigned int size() const override;
     virtual bool isEmpty() const override;
+    virtual int keysOnSpecificLevel(unsigned int level) const override;
+
 private:
     SkipList &skipList;
     std::ofstream &frontOut;

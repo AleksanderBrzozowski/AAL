@@ -19,6 +19,8 @@ public:
     virtual unsigned int size() const override;
     virtual bool isEmpty() const override;
     virtual std::string front() override;
+    virtual int keysOnSpecificLevel(unsigned int level) const override;
+
 private:
     static constexpr auto DEFAULT_MAX_LEVEL = 16;
     static constexpr auto DEFAULT_PROBABILITY = 0.5F;

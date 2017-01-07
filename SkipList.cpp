@@ -5,6 +5,7 @@
 #include <limits>
 #include <stdexcept>
 #include <iostream>
+#include <cstdlib>
 #include "SkipList.h"
 
 SkipList::Node::Node(int key, const std::string &value, unsigned int level) :
@@ -88,5 +89,18 @@ std::string SkipList::front() {
         head->forward[i] = node->forward[i];
     delete node;
     return value;
+}
+
+int SkipList::keysOnSpecificLevel(unsigned int level) const {
+    if(level < maxLevel){
+        int counter = 0;
+        auto node = head->forward[level];
+        while(node != tail) {
+            ++counter;
+            node = node->forward[level];
+        }
+        return counter;
+    }
+    return 0;
 }
 

@@ -13,6 +13,7 @@ public:
     virtual void insertOrUpdate(int searchKey, const std::string &newValue) = 0;
     virtual unsigned int size() const = 0;
     virtual bool isEmpty() const = 0;
+    virtual int keysOnSpecificLevel(unsigned int level) const = 0;
 };
 
 #endif //AAL_BASESKIPLIST_H

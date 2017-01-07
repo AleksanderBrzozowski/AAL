@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <limits>
 #include <iostream>
+#include <stdexcept>
 #include "Simulation.h"
 
 Simulation::Simulation(BaseSkipList &skipList, std::ostream &os) : skipList(skipList), os(os), minAction(MIN_ACTION), maxAction(MAX_ACTION), range(maxAction - minAction) {}

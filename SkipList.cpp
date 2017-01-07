@@ -79,7 +79,7 @@ bool SkipList::isEmpty() const {
     return head->forward[0] == tail;
 }
 
-std::string SkipList::front() {
+std::string SkipList::peek() {
     if(isEmpty())
         throw std::runtime_error("No elements in skip list");
 
@@ -102,5 +102,16 @@ int SkipList::keysOnSpecificLevel(unsigned int level) const {
         return counter;
     }
     return 0;
+}
+
+int SkipList::getMinKey() const {
+    if(isEmpty())
+        throw std::runtime_error("No elements in skip list");
+
+    return head->forward[0]->key;
+}
+
+int SkipList::getMaxLevel() {
+    return maxLevel;
 }
 

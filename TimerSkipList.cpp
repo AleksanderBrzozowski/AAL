@@ -5,15 +5,15 @@
 #include "TimerSkipList.h"
 #include <chrono>
 
-TimerSkipList::TimerSkipList(SkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut) : skipList(
+TimerSkipList::TimerSkipList(BaseSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut) : skipList(
         skipList), frontOut(frontOut), insertOrUpdateOut(insertOrUpdateOut) {}
 
 TimerSkipList::~TimerSkipList() {}
 
-std::string TimerSkipList::front() {
+std::string TimerSkipList::peek() {
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    std::string value = skipList.front();
+    std::string value = skipList.peek();
 
     auto t2 = std::chrono::high_resolution_clock::now();
 
@@ -42,4 +42,12 @@ bool TimerSkipList::isEmpty() const {
 
 int TimerSkipList::keysOnSpecificLevel(unsigned int level) const {
     return skipList.keysOnSpecificLevel(level);
+}
+
+int TimerSkipList::getMinKey() const {
+    return skipList.getMinKey();
+}
+
+int TimerSkipList::getMaxLevel() {
+    return skipList.getMaxLevel();
 }

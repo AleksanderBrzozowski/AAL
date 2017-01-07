@@ -29,11 +29,11 @@ TEST_F(SkipListTest, insertAndTakeFromFront) {
         std::ostringstream os;
         os << i;
         ASSERT_FALSE(skipList.isEmpty());
-        ASSERT_EQ(skipList.front(), os.str());
+        ASSERT_EQ(skipList.peek(), os.str());
         ASSERT_EQ(SIZE - i, skipList.size());
     }
     ASSERT_TRUE(skipList.isEmpty());
-    EXPECT_THROW(skipList.front(), std::runtime_error);
+    EXPECT_THROW(skipList.peek(), std::runtime_error);
 }
 
 
@@ -63,15 +63,15 @@ TEST_F(SkipListTest, updateValues) {
         std::ostringstream os;
         os << i << i;
         ASSERT_FALSE(skipList.isEmpty());
-        ASSERT_EQ(skipList.front(), os.str());
+        ASSERT_EQ(skipList.peek(), os.str());
         ASSERT_EQ(SIZE - i, skipList.size());
     }
     ASSERT_TRUE(skipList.isEmpty());
-    EXPECT_THROW(skipList.front(), std::runtime_error);
+    EXPECT_THROW(skipList.peek(), std::runtime_error);
 }
 
 TEST_F(SkipListTest, EmptyList) {
     ASSERT_TRUE(skipList.isEmpty());
     ASSERT_EQ(0, skipList.size());
-    EXPECT_THROW(skipList.front(), std::runtime_error);
+    EXPECT_THROW(skipList.peek(), std::runtime_error);
 }

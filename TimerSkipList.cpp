@@ -63,11 +63,11 @@ int TimerSkipList::getMaxLevel() {
     return skipList.getMaxLevel();
 }
 
-double TimerSkipList::getLastInsertOrUpdateTime() const {
+long TimerSkipList::getLastInsertOrUpdateTime() const {
     return lastInsertOrUpdateTime;
 }
 
-double TimerSkipList::getLastPeekTime() const {
+long TimerSkipList::getLastPeekTime() const {
     return lastPeekTime;
 }
 

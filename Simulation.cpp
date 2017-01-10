@@ -19,18 +19,18 @@ void Simulation::run() {
     int actionCounter = 0;
     int addedActionCounter = 0;
 
-    const int SHOW_LEVELS = 1000;
+    const int SHOW_LEVELS = 10000000;
     int i = SHOW_LEVELS;
 
     while (!skipList.isEmpty()) {
-        int minKey = skipList.getMinKey();
-        std::string value = skipList.peek();
-
-        if (i > SHOW_LEVELS) {
+        if (i >= SHOW_LEVELS) {
             showLevelsStatistics();
             i = 0;
         }
         ++i;
+
+        int minKey = skipList.getMinKey();
+        std::string value = skipList.peek();
 
         for (char &c : value) {
             if(singleAction(minKey, c))
@@ -55,7 +55,7 @@ bool Simulation::singleAction(int actualTime, const char &c) const {
     bool addAction = sign >= minAction + 10;
 
     if (addAction) {
-        int key = rand() % (actualTime + 10000 - actualTime) + actualTime;
+        int key = rand() % 10000 + actualTime;
         std::string action = std::string(1, c);
         skipList.insertOrUpdate(key, action);
     }
@@ -77,7 +77,7 @@ char Simulation::randomChar() const {
 }
 
 void Simulation::generateActions(BaseSkipList &skipList, int actionsToGenerate) {
-    for (int i = actionsToGenerate; i > 0; --i) {
+    for (int i = 0; i < actionsToGenerate; ++i) {
         skipList.insertOrUpdate(i, std::string(1, randomChar(MIN_ACTION, MAX_ACTION)));
     }
 }

@@ -37,7 +37,6 @@ void SkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     std::vector<Node *> update(maxLevel, nullptr);
     auto x = head;
     for (int i = maxLevel - 1 ; i >= 0; i--) {
-        //find last node which key is higher than searchKey
         while (x->forward[i]->key < searchKey)
             x = x->forward[i];
         update[i] = x;

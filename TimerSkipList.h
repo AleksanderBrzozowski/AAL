@@ -20,18 +20,16 @@ public:
     virtual int keysOnSpecificLevel(unsigned int level) const override;
     virtual int getMaxLevel() override;
 
-    virtual int getMaxKey() const override;
-
-    virtual double getLastInsertOrUpdateTime() const override;
-    virtual double getLastPeekTime() const override;
+    virtual long getLastInsertOrUpdateTime() const override;
+    virtual long getLastPeekTime() const override;
     virtual double getAverageInsertOrUpdateTime() const override;
     virtual double getAveragePeekTime() const override;
 
 private:
     BaseSkipList &skipList;
 
-    double lastInsertOrUpdateTime;
-    double lastPeekTime;
+    long lastInsertOrUpdateTime;
+    long lastPeekTime;
     double averageInsertOrUpdateTime;
     double averagePeekTime;
 };

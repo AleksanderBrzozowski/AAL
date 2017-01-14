@@ -24,14 +24,32 @@ TEST_F(SkipListTest, specificMaxLevel) {
 
 
 TEST_F(SkipListTest, minKey) {
+    ASSERT_THROW(skipList.getMinKey(), std::runtime_error);
+
     skipList.insertOrUpdate(1, "a");
     skipList.insertOrUpdate(2, "b");
+    ASSERT_EQ(1, skipList.getMinKey());
 
+    skipList.insertOrUpdate(3, "d");
     ASSERT_EQ(1, skipList.getMinKey());
 
     skipList.insertOrUpdate(0, "c");
-
     ASSERT_EQ(0, skipList.getMinKey());
+}
+
+
+TEST_F(SkipListTest, maxKey) {
+    ASSERT_THROW(skipList.getMaxKey(), std::runtime_error);
+
+    skipList.insertOrUpdate(1, "a");
+    skipList.insertOrUpdate(2, "b");
+    ASSERT_EQ(2, skipList.getMaxKey());
+
+    skipList.insertOrUpdate(0, "c");
+    ASSERT_EQ(2, skipList.getMaxKey());
+
+    skipList.insertOrUpdate(3, "d");
+    ASSERT_EQ(3, skipList.getMaxKey());
 }
 
 TEST_F(SkipListTest, insertAndPeek) {

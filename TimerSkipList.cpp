@@ -69,3 +69,7 @@ double TimerSkipList::getAverageInsertOrUpdateTime() const {
 double TimerSkipList::getAveragePeekTime() const {
     return averagePeekTime;
 }
+
+int TimerSkipList::getMaxKey() const {
+    return skipList.getMaxKey();
+}

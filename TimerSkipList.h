@@ -20,6 +20,8 @@ public:
     virtual int keysOnSpecificLevel(unsigned int level) const override;
     virtual int getMaxLevel() override;
 
+    virtual int getMaxKey() const override;
+
     virtual double getLastInsertOrUpdateTime() const override;
     virtual double getLastPeekTime() const override;
     virtual double getAverageInsertOrUpdateTime() const override;

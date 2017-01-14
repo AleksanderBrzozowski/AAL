@@ -56,3 +56,7 @@ double OutTimerSkipList::getAverageInsertOrUpdateTime() const {
 double OutTimerSkipList::getAveragePeekTime() const {
     return timerSkipList.getAveragePeekTime();
 }
+
+int OutTimerSkipList::getMaxKey() const {
+    return timerSkipList.getMaxKey();
+}

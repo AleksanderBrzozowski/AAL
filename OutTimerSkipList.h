@@ -28,6 +28,8 @@ public:
     virtual double getAverageInsertOrUpdateTime() const override;
     virtual double getAveragePeekTime() const override;
 
+    virtual int getMaxKey() const override;
+
 private:
     BaseTimerSkipList &timerSkipList;
     std::ofstream &frontOut;

@@ -21,19 +21,24 @@ void Simulation::run() {
     int addedElementsCounter = 0;
 
     int i = showLevels;
+    int percentDone = 0;
 
+    std::cout << "Done: " << percentDone << "%" << std::endl;
     while (!skipList.isEmpty() && iterationsCounter < iterations) {
         if (i >= showLevels) {
             showStatistics();
             i = 0;
+            percentDone += 10;
+            std::cout << "Done: " << percentDone << "%" << std::endl;
         }
         ++i;
 
         std::string value = skipList.peek();
-        ++iterationsCounter;
 
         for (char &c : value) {
-            if(skipList.size() <= range * 1.1) {
+            if (iterationsCounter >= iterations)
+                break;
+            else if (skipList.size() <= range * 1.1) {
                 int min = skipList.getMinKey() + range;
                 int max = skipList.getMaxKey() + range;
 
@@ -41,6 +46,7 @@ void Simulation::run() {
                 std::string action = std::string(1, randomChar());
                 skipList.insertOrUpdate(key, action);
 
+                ++iterationsCounter;
                 ++addedElementsCounter;
             }
         }

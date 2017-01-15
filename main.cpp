@@ -25,7 +25,7 @@ int main() {
 void test1() {
     SkipList skipList;
 
-    Simulation::generateActions(skipList, 10000);
+    Simulation::generateActions(skipList, 100000);
 
     Simulation simulation(skipList, std::cout);
     simulation.run();
@@ -51,7 +51,7 @@ void test2() {
 
 void test3() {
     SkipList skipList;
-    Simulation::generateActions(skipList, 100);
+    Simulation::generateActions(skipList, 100000);
     TimerSkipList timerSkipList(skipList);
 
     Simulation simulation(skipList, std::cout);

@@ -41,11 +41,12 @@ private:
     Node* tail;
     const float probability;
     const unsigned int maxLevel;
-    int minKey;
     int maxKey;
 
     unsigned int randomLevel() const;
     void checkIsNotEmpty() const;
+
+    void resetMaxKey();
 };
 
 

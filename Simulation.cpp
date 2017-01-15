@@ -32,7 +32,6 @@ void Simulation::run() {
             std::cout << "Done: " << percentDone << "%" << std::endl;
         }
         ++i;
-
         std::string value = skipList.peek();
 
         for (char &c : value) {

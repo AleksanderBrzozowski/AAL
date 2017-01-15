@@ -18,9 +18,10 @@ SkipList::SkipList(const float probability, const unsigned int maxLevel) :
     head = new Node(std::numeric_limits<int>::min(), HEAD_VALUE, maxLevel);
     tail = new Node(std::numeric_limits<int>::max(), TAIL_VALUE, maxLevel);
     std::fill(head->forward.begin(), head->forward.end(), tail);
-    minKey = std::numeric_limits<int>::max();
-    maxKey = std::numeric_limits<int>::min();
+    resetMaxKey();
 }
+
+void SkipList::resetMaxKey() { maxKey = std::numeric_limits<int>::min(); }
 
 SkipList::~SkipList() {
     auto node = head;
@@ -36,8 +37,6 @@ SkipList::~SkipList() {
 
 
 void SkipList::insertOrUpdate(int key, const std::string &newValue) {
-    if(key < minKey)
-        minKey = key;
     if(key > maxKey)
         maxKey = key;
 
@@ -93,6 +92,10 @@ std::string SkipList::peek() {
     for (unsigned int i = 0; i < node->forward.size(); ++i)
         head->forward[i] = node->forward[i];
     delete node;
+
+    if(isEmpty())
+        resetMaxKey();
+
     return value;
 }
 
@@ -120,12 +123,7 @@ int SkipList::getMaxLevel() {
 
 int SkipList::getMaxKey() const {
     checkIsNotEmpty();
-    auto node = head;
-    for (int i = maxLevel - 1; i >= 0; --i) {
-        while(node->forward[i] != tail)
-            node = node->forward[i];
-    }
-    return node->key;
+    return maxKey;
 }
 
 void SkipList::checkIsNotEmpty() const {

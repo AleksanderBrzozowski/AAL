@@ -19,6 +19,7 @@ Simulation::Simulation(BaseSkipList &skipList, std::ostream &os, int iterations)
 void Simulation::run() {
     int iterationsCounter = 0;
     int addedElementsCounter = 0;
+    int startElements = skipList.size();
 
     int i = showLevels;
     int percentDone = 0;
@@ -51,7 +52,8 @@ void Simulation::run() {
         }
     }
 
-    os << "Done actions: " << iterationsCounter << ", added actions: " << addedElementsCounter << std::endl;
+    os << "Done actions: " << iterationsCounter << ", added actions: " << addedElementsCounter
+       << ", initial capacity: " << startElements << std::endl;
 }
 
 void Simulation::showStatistics() const {

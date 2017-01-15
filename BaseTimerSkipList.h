@@ -9,10 +9,8 @@
 
 class BaseTimerSkipList : public BaseSkipList{
 public:
-    virtual long getLastInsertOrUpdateTime() const = 0;
-    virtual long getLastPeekTime() const = 0;
+    virtual long long int getLastInsertOrUpdateTime() const = 0;
     virtual double getAverageInsertOrUpdateTime() const = 0;
-    virtual double getAveragePeekTime() const = 0;
 };
 
 #endif //AAL_BASETIMERSKIPLIST_H

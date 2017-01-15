@@ -39,20 +39,12 @@ int OutTimerSkipList::getMaxLevel() {
     return timerSkipList.getMaxLevel();
 }
 
-long OutTimerSkipList::getLastInsertOrUpdateTime() const {
+long long int OutTimerSkipList::getLastInsertOrUpdateTime() const {
     return timerSkipList.getLastInsertOrUpdateTime();
-}
-
-long OutTimerSkipList::getLastPeekTime() const {
-    return timerSkipList.getLastPeekTime();
 }
 
 double OutTimerSkipList::getAverageInsertOrUpdateTime() const {
     return timerSkipList.getAverageInsertOrUpdateTime();
-}
-
-double OutTimerSkipList::getAveragePeekTime() const {
-    return timerSkipList.getAveragePeekTime();
 }
 
 int OutTimerSkipList::getMaxKey() const {

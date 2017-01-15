@@ -20,7 +20,7 @@ void averageInfo(std::ostream &os, const TimerSkipList &timerSkipList);
 
 void simpleSimulation(const int elements, int iterations);
 
-void simulate(const int elements, BaseSkipList &skipList, int iterations);
+void simulate(BaseSkipList &skipList, int iterations);
 
 int main(int argc, char *argv[]) {
     srand((unsigned int) time(nullptr));
@@ -62,35 +62,38 @@ int main(int argc, char *argv[]) {
     }
 
     return 0;
+
 }
 
 void simpleSimulation(const int elements, int iterations) {
     SkipList skipList(0.5F, calculateSkipListLevel(elements));
     Simulation::generateActions(skipList, elements);
 
-    simulate(elements, skipList, iterations);
+    simulate(skipList, iterations);
 }
 
 void extendedSimulation(int elements, int iterations) {
     SkipList skipList(0.5F, calculateSkipListLevel(elements));
+    Simulation::generateActions(skipList, elements);
+
     TimerSkipList timerSkipList(skipList);
 
-    simulate(elements, timerSkipList, iterations);
+    simulate(timerSkipList, iterations);
 
     averageInfo(std::cout, timerSkipList);
 }
 
 void outputExtendedSimulation(int elements, std::ofstream &os, int iterations) {
     SkipList skipList(0.5F, calculateSkipListLevel(elements));
+    Simulation::generateActions(skipList, elements);
     TimerSkipList timerSkipList(skipList);
     OutTimerSkipList outTimerSkipList(timerSkipList, os);
 
-    simulate(elements, outTimerSkipList, iterations);
+    simulate(outTimerSkipList, iterations);
     averageInfo(std::cout, timerSkipList);
 }
 
-void simulate(const int elements, BaseSkipList &skipList, int iterations) {
-    Simulation::generateActions(skipList, elements);
+void simulate(BaseSkipList &skipList, int iterations) {
     Simulation simulation(skipList, std::cout, iterations);
     simulation.run();
 }

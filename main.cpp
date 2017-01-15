@@ -41,7 +41,7 @@ void test2() {
 
     Simulation::generateActions(skipList, 100000);
 
-    Simulation simulation(outTimerSkipList, actions, 1000);
+    Simulation simulation(outTimerSkipList, actions, 10000);
     simulation.run();
 
     averageInfo(actions, timerSkipList);
@@ -50,11 +50,11 @@ void test2() {
 }
 
 void test3(int elements) {
-    SkipList skipList;
+    SkipList skipList(0.5F, 23);
     Simulation::generateActions(skipList, elements);
     TimerSkipList timerSkipList(skipList);
 
-    Simulation simulation(timerSkipList, std::cout);
+    Simulation simulation(timerSkipList, std::cout, 1000);
 
     simulation.run();
 

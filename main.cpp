@@ -10,25 +10,26 @@
 #include "Simulation.h"
 #include "TimerSkipList.h"
 
-void extendedSimulation(int elements);
+void extendedSimulation(int elements, int iterations);
 
-void outputExtendedSimulation(int elements, std::ofstream &os);
+void outputExtendedSimulation(int elements, std::ofstream &os, int iterations);
 
 unsigned int calculateSkipListLevel(int elements);
 
 void averageInfo(std::ostream &os, const TimerSkipList &timerSkipList);
 
-void simpleSimulation(int elements);
+void simpleSimulation(const int elements, int iterations);
 
-void simulate(int elements, BaseSkipList &skipList);
+void simulate(const int elements, BaseSkipList &skipList, int iterations);
 
 int main(int argc, char *argv[]) {
     srand((unsigned int) time(nullptr));
 
     const int ELEMENTS_SIZE = 1000;
+    const int ITERATIONS = 1000;
 
     if (argc < 2)
-        simpleSimulation(ELEMENTS_SIZE);
+        simpleSimulation(ELEMENTS_SIZE, ITERATIONS);
     else {
         std::unordered_map<std::string, std::string> options;
         bool isOption = true;
@@ -48,48 +49,49 @@ int main(int argc, char *argv[]) {
         }
 
         int elements = options.count("-e") ? std::stoi((*options.find("-e")).second) : ELEMENTS_SIZE;
+        int iterations = options.count("-i") ? std::stoi((*options.find("-i")).second) : ITERATIONS;
         bool isExtended = options.count("-t") > 1;
 
         if (options.count("-o")) {
             std::ofstream os((*options.find("-o")).second);
-            outputExtendedSimulation(elements, os);
+            outputExtendedSimulation(elements, os, iterations);
             os.close();
         } else {
-            isExtended ? simpleSimulation(elements) : extendedSimulation(elements);
+            isExtended ? simpleSimulation(elements, iterations) : extendedSimulation(elements, iterations);
         }
     }
 
     return 0;
 }
 
-void simpleSimulation(int elements) {
+void simpleSimulation(const int elements, int iterations) {
     SkipList skipList(0.5F, calculateSkipListLevel(elements));
     Simulation::generateActions(skipList, elements);
 
-    simulate(elements, skipList);
+    simulate(elements, skipList, iterations);
 }
 
-void extendedSimulation(int elements) {
+void extendedSimulation(int elements, int iterations) {
     SkipList skipList(0.5F, calculateSkipListLevel(elements));
     TimerSkipList timerSkipList(skipList);
 
-    simulate(elements, timerSkipList);
+    simulate(elements, timerSkipList, iterations);
 
     averageInfo(std::cout, timerSkipList);
 }
 
-void outputExtendedSimulation(int elements, std::ofstream &os) {
+void outputExtendedSimulation(int elements, std::ofstream &os, int iterations) {
     SkipList skipList(0.5F, calculateSkipListLevel(elements));
     TimerSkipList timerSkipList(skipList);
     OutTimerSkipList outTimerSkipList(timerSkipList, os);
 
-    simulate(elements, outTimerSkipList);
+    simulate(elements, outTimerSkipList, iterations);
     averageInfo(std::cout, timerSkipList);
 }
 
-void simulate(int elements, BaseSkipList &skipList) {
+void simulate(const int elements, BaseSkipList &skipList, int iterations) {
     Simulation::generateActions(skipList, elements);
-    Simulation simulation(skipList, std::cout);
+    Simulation simulation(skipList, std::cout, iterations);
     simulation.run();
 }
 

@@ -24,12 +24,13 @@ public:
     virtual long getLastPeekTime() const override;
     virtual double getAverageInsertOrUpdateTime() const override;
     virtual double getAveragePeekTime() const override;
+    virtual int getMaxKey() const override;
 
 private:
     BaseSkipList &skipList;
 
-    long lastInsertOrUpdateTime;
-    long lastPeekTime;
+    long long int lastInsertOrUpdateTime;
+    long long int lastPeekTime;
     double averageInsertOrUpdateTime;
     double averagePeekTime;
 };

@@ -5,83 +5,74 @@
 #include <cstdlib>
 #include <limits>
 #include <iostream>
-#include <stdexcept>
 #include "Simulation.h"
 
-Simulation::Simulation(BaseSkipList &skipList, std::ostream &os) : skipList(skipList), os(os), minAction(MIN_ACTION), maxAction(MAX_ACTION), range(maxAction - minAction) {}
+Simulation::Simulation(BaseSkipList &skipList, std::ostream &os) : Simulation(skipList, os, ITERATIONS) {}
 
-
-Simulation::Simulation(BaseSkipList &skipList, std::ostream &os, int actionsToGenerate) : Simulation(skipList, os) {
-    generateActions(skipList, actionsToGenerate);
-}
+Simulation::Simulation(BaseSkipList &skipList, std::ostream &os, int iterations) : skipList(skipList), os(os),
+                                                                                   minAction(MIN_ACTION),
+                                                                                   maxAction(MAX_ACTION),
+                                                                                   range(skipList.size()),
+                                                                                   showLevels(iterations / 10),
+                                                                                   iterations(iterations) {}
 
 void Simulation::run() {
-    int actionCounter = 0;
-    int addedActionCounter = 0;
+    int iterationsCounter = 0;
+    int addedElementsCounter = 0;
 
-    const int SHOW_LEVELS = 1000;
-    int i = SHOW_LEVELS;
+    int i = showLevels;
 
-    while (!skipList.isEmpty()) {
-        int minKey = skipList.getMinKey();
-        std::string value = skipList.peek();
-
-        if (i > SHOW_LEVELS) {
-            showLevelsStatistics();
+    while (!skipList.isEmpty() && iterationsCounter < iterations) {
+        if (i >= showLevels) {
+            showStatistics();
             i = 0;
         }
         ++i;
 
+        std::string value = skipList.peek();
+        ++iterationsCounter;
+
         for (char &c : value) {
-            if(singleAction(minKey, c))
-                ++addedActionCounter;
-            ++actionCounter;
+            if(skipList.size() <= range * 1.1) {
+                int min = skipList.getMinKey() + range;
+                int max = skipList.getMaxKey() + range;
+
+                int key = randomInt(min, max);
+                std::string action = std::string(1, randomChar());
+                skipList.insertOrUpdate(key, action);
+
+                ++addedElementsCounter;
+            }
         }
     }
 
-    os << "Done actions: " << actionCounter << ", added actions: " << addedActionCounter << std::endl;
+    os << "Done actions: " << iterationsCounter << ", added actions: " << addedElementsCounter << std::endl;
 }
 
-bool Simulation::singleAction(int actualTime, const char &c) const {
-    static int previousActualTime = 0;
-    if(previousActualTime > actualTime)
-        throw std::runtime_error("key is lower than actual time");
-    previousActualTime = actualTime;
-
-    if(c < minAction || c > maxAction)
-        throw std::invalid_argument("Unknown action!");
-
-    char sign = randomChar();
-    bool addAction = sign >= minAction + 10;
-
-    if (addAction) {
-        int key = rand() % (actualTime + 10000 - actualTime) + actualTime;
-        std::string action = std::string(1, c);
-        skipList.insertOrUpdate(key, action);
-    }
-    return addAction;
-}
-
-void Simulation::showLevelsStatistics() const{
+void Simulation::showStatistics() const {
     int size = skipList.size();
     for (unsigned int i = 0; i < skipList.getMaxLevel(); ++i) {
         os << "level: " << i << ", elements: " << skipList.keysOnSpecificLevel(i)
-                  << ", should have: " << size << std::endl;
+           << ", should have: " << size << std::endl;
         size /= 2;
     }
+    int maxKey = skipList.getMaxKey();
+    int minKey = skipList.getMinKey();
+    os << "maxKey: " << maxKey << ", minKey: " << minKey << std::endl;
+    os << "diff between keys: " << maxKey - minKey << std::endl;
     os << std::endl;
 }
 
 char Simulation::randomChar() const {
-    return randomChar(minAction, maxAction);
+    return (char) randomInt(minAction, maxAction);
 }
 
 void Simulation::generateActions(BaseSkipList &skipList, int actionsToGenerate) {
-    for (int i = actionsToGenerate; i > 0; --i) {
-        skipList.insertOrUpdate(i, std::string(1, randomChar(MIN_ACTION, MAX_ACTION)));
+    for (int key = std::numeric_limits<int>::min(), i = actionsToGenerate; i > 0; --i) {
+        skipList.insertOrUpdate(++key, std::string(1, (char) randomInt(MIN_ACTION, MAX_ACTION)));
     }
 }
 
-char Simulation::randomChar(char min, char max) {
-    return (char) (std::rand() % (max - min) + min);
+int Simulation::randomInt(int min, int max) {
+    return (std::rand() % (max - min) + min);
 }

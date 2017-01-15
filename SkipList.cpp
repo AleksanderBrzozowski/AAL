@@ -43,7 +43,7 @@ void SkipList::insertOrUpdate(int key, const std::string &newValue) {
 
     std::vector<Node *> update(maxLevel, nullptr);
     auto x = head;
-    for (int i = maxLevel - 1 ; i >= 0; i--) {
+    for (int i = maxLevel - 1 ; i >= 0; --i) {
         //find last node which key is higher than searchKey
         while (x->forward[i]->key < key)
             x = x->forward[i];
@@ -111,7 +111,7 @@ int SkipList::keysOnSpecificLevel(unsigned int level) const {
 
 int SkipList::getMinKey() const {
     checkIsNotEmpty();
-    return minKey;
+    return head->forward[0]->key;
 }
 
 int SkipList::getMaxLevel() {
@@ -120,7 +120,12 @@ int SkipList::getMaxLevel() {
 
 int SkipList::getMaxKey() const {
     checkIsNotEmpty();
-    return maxKey;
+    auto node = head;
+    for (int i = maxLevel - 1; i >= 0; --i) {
+        while(node->forward[i] != tail)
+            node = node->forward[i];
+    }
+    return node->key;
 }
 
 void SkipList::checkIsNotEmpty() const {

@@ -35,6 +35,15 @@ TEST_F(SkipListTest, minKey) {
 
     skipList.insertOrUpdate(0, "c");
     ASSERT_EQ(0, skipList.getMinKey());
+
+    skipList.peek();
+    ASSERT_EQ(1, skipList.getMinKey());
+
+    while(!skipList.isEmpty())
+        skipList.peek();
+
+    skipList.insertOrUpdate(100, "c");
+    ASSERT_EQ(100, skipList.getMinKey());
 }
 
 
@@ -50,6 +59,15 @@ TEST_F(SkipListTest, maxKey) {
 
     skipList.insertOrUpdate(3, "d");
     ASSERT_EQ(3, skipList.getMaxKey());
+
+    skipList.peek();
+    ASSERT_EQ(3, skipList.getMaxKey());
+
+    while(!skipList.isEmpty())
+        skipList.peek();
+
+    skipList.insertOrUpdate(1, "a");
+    ASSERT_EQ(1, skipList.getMaxKey());
 }
 
 TEST_F(SkipListTest, insertAndPeek) {

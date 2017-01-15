@@ -18,34 +18,34 @@ void averageInfo(std::ostream &os, const TimerSkipList &timerSkipList);
 int main() {
     srand((unsigned int) time(nullptr));
 
-    test2();
+    test3();
     return 0;
 }
 
 void test1() {
     SkipList skipList;
 
-    Simulation simulation(skipList, std::cout, 100000);
+    Simulation::generateActions(skipList, 100000);
+
+    Simulation simulation(skipList, std::cout);
     simulation.run();
 }
 
 void test2() {
-    std::ofstream frontOut("frontOut.txt");
     std::ofstream insertOrUpdateOut("insertOrUpdate.txt");
     std::ofstream actions("actions.txt");
 
     SkipList skipList;
     TimerSkipList timerSkipList(skipList);
-    OutTimerSkipList outTimerSkipList(timerSkipList, frontOut, insertOrUpdateOut);
+    OutTimerSkipList outTimerSkipList(timerSkipList, insertOrUpdateOut);
 
-    Simulation::generateActions(skipList, 100000);
+    Simulation::generateActions(skipList, 1000000);
 
-    Simulation simulation(outTimerSkipList, actions);
+    Simulation simulation(outTimerSkipList, actions, 1000);
     simulation.run();
 
     averageInfo(actions, timerSkipList);
 
-    frontOut.close();
     insertOrUpdateOut.close();
 }
 

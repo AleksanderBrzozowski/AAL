@@ -5,15 +5,13 @@
 #include "OutTimerSkipList.h"
 #include <chrono>
 
-OutTimerSkipList::OutTimerSkipList(BaseTimerSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut) : timerSkipList(
-        skipList), frontOut(frontOut), insertOrUpdateOut(insertOrUpdateOut) {}
+OutTimerSkipList::OutTimerSkipList(BaseTimerSkipList &skipList, std::ofstream &insertOrUpdateOut) :
+        timerSkipList(skipList), insertOrUpdateOut(insertOrUpdateOut) {}
 
 OutTimerSkipList::~OutTimerSkipList() {}
 
 std::string OutTimerSkipList::peek() {
-    std::string value = timerSkipList.peek();
-    frontOut << getLastPeekTime() << std::endl;
-    return value;
+    return timerSkipList.peek();
 }
 
 void OutTimerSkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
@@ -55,4 +53,8 @@ double OutTimerSkipList::getAverageInsertOrUpdateTime() const {
 
 double OutTimerSkipList::getAveragePeekTime() const {
     return timerSkipList.getAveragePeekTime();
+}
+
+int OutTimerSkipList::getMaxKey() const {
+    return timerSkipList.getMaxKey();
 }

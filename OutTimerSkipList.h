@@ -13,7 +13,7 @@
 
 class OutTimerSkipList : public BaseTimerSkipList {
 public:
-    OutTimerSkipList(BaseTimerSkipList &skipList, std::ofstream &frontOut, std::ofstream &insertOrUpdateOut);
+    OutTimerSkipList(BaseTimerSkipList &skipList, std::ofstream &insertOrUpdateOut);
     virtual ~OutTimerSkipList();
 
     virtual std::string peek() override;
@@ -27,10 +27,10 @@ public:
     virtual long getLastPeekTime() const override;
     virtual double getAverageInsertOrUpdateTime() const override;
     virtual double getAveragePeekTime() const override;
+    virtual int getMaxKey() const override;
 
 private:
     BaseTimerSkipList &timerSkipList;
-    std::ofstream &frontOut;
     std::ofstream &insertOrUpdateOut;
 };
 

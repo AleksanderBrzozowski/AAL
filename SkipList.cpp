@@ -18,7 +18,10 @@ SkipList::SkipList(const float probability, const unsigned int maxLevel) :
     head = new Node(std::numeric_limits<int>::min(), HEAD_VALUE, maxLevel);
     tail = new Node(std::numeric_limits<int>::max(), TAIL_VALUE, maxLevel);
     std::fill(head->forward.begin(), head->forward.end(), tail);
+    resetMaxKey();
 }
+
+void SkipList::resetMaxKey() { maxKey = std::numeric_limits<int>::min(); }
 
 SkipList::~SkipList() {
     auto node = head;
@@ -33,23 +36,27 @@ SkipList::~SkipList() {
 }
 
 
-void SkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
+void SkipList::insertOrUpdate(int key, const std::string &newValue) {
+    if(key > maxKey)
+        maxKey = key;
+
     std::vector<Node *> update(maxLevel, nullptr);
     auto x = head;
-    for (int i = maxLevel - 1 ; i >= 0; i--) {
-        while (x->forward[i]->key < searchKey)
+    for (int i = maxLevel - 1 ; i >= 0; --i) {
+        //find last node which key is higher than searchKey
+        while (x->forward[i]->key < key)
             x = x->forward[i];
         update[i] = x;
     }
 
     x = x->forward[0];
     //update value if key exists
-    if(x->key == searchKey)
+    if(x->key == key)
         x->value += newValue;
 
     else{
         auto lvl = randomLevel();
-        x = new Node(searchKey, newValue, lvl);
+        x = new Node(key, newValue, lvl);
         for (auto i = 0; i < lvl; i++) {
             x->forward[i] = update[i]->forward[i];
             update[i]->forward[i] = x;
@@ -57,7 +64,7 @@ void SkipList::insertOrUpdate(int searchKey, const std::string &newValue) {
     }
 }
 
-unsigned int SkipList::randomLevel()  {
+unsigned int SkipList::randomLevel() const {
     unsigned int level = 1;
     while ((float)std::rand() / RAND_MAX < probability && level < maxLevel)
         ++level;
@@ -79,14 +86,16 @@ bool SkipList::isEmpty() const {
 }
 
 std::string SkipList::peek() {
-    if(isEmpty())
-        throw std::runtime_error("No elements in skip list");
-
+    checkIsNotEmpty();
     auto node = head->forward[0];
     std::string value = node->value;
     for (unsigned int i = 0; i < node->forward.size(); ++i)
         head->forward[i] = node->forward[i];
     delete node;
+
+    if(isEmpty())
+        resetMaxKey();
+
     return value;
 }
 
@@ -104,13 +113,21 @@ int SkipList::keysOnSpecificLevel(unsigned int level) const {
 }
 
 int SkipList::getMinKey() const {
-    if(isEmpty())
-        throw std::runtime_error("No elements in skip list");
-
+    checkIsNotEmpty();
     return head->forward[0]->key;
 }
 
 int SkipList::getMaxLevel() {
     return maxLevel;
+}
+
+int SkipList::getMaxKey() const {
+    checkIsNotEmpty();
+    return maxKey;
+}
+
+void SkipList::checkIsNotEmpty() const {
+    if(isEmpty())
+        throw std::runtime_error("No elements in skip list");
 }
 

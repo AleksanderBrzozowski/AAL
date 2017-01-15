@@ -16,6 +16,7 @@ public:
     virtual bool isEmpty() const = 0;
     virtual int keysOnSpecificLevel(unsigned int level) const = 0;
     virtual int getMaxLevel() = 0;
+    virtual int getMaxKey() const = 0;
 };
 
 #endif //AAL_BASESKIPLIST_H

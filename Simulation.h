@@ -17,7 +17,7 @@ public:
     static void generateActions(BaseSkipList &skipList, int actionsToGenerate);
     static char constexpr MIN_ACTION = 'a';
     static char constexpr MAX_ACTION = 'z';
-    static int constexpr ITERATIONS = 10000;
+    static int constexpr ITERATIONS = 1000;
 private:
     BaseSkipList &skipList;
 

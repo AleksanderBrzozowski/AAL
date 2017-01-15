@@ -49,6 +49,8 @@ void Simulation::run() {
             }
         }
     }
+    showStatistics();
+    std::cout << "Done: " << iterationsCounter * 100 / iterations << "%" << std::endl;
     os << "Done actions: " << iterationsCounter << ", added actions: " << addedElementsCounter
        << ", initial capacity: " << startElements << std::endl;
 }
@@ -64,7 +66,6 @@ void Simulation::showStatistics() const {
     int minKey = skipList.getMinKey();
     os << "maxKey: " << maxKey << ", minKey: " << minKey << std::endl;
     os << "diff between keys: " << maxKey - minKey << std::endl;
-    os << std::endl;
 }
 
 char Simulation::randomChar() const {

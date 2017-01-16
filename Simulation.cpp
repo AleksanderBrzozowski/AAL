@@ -26,19 +26,19 @@ void Simulation::run() {
         std::string value = skipList.peek();
 
         for (char &c : value) {
-            if (i >= showLevels) {
-                showStatistics();
-                i = 0;
-                std::cout << "Done: " << iterationsCounter * 100 / iterations << "%" << std::endl;
-            }
-            ++i;
+            while (skipList.size() < range) {
+                if (i >= showLevels) {
+                    showStatistics();
+                    i = 0;
+                    std::cout << "Done: " << iterationsCounter * 100 / iterations << "%" << std::endl;
+                }
+                ++i;
 
-            if (iterationsCounter >= iterations)
-                break;
+                if (iterationsCounter >= iterations)
+                    break;
 
-            else if (skipList.size() <= range * 1.1) {
-                int min = skipList.getMinKey() + range / 2;
-                int max = skipList.getMaxKey() + range / 2;
+                int min = (int) (skipList.getMinKey() + iterations * 1.2);
+                int max = (int) (skipList.getMaxKey() + iterations * 1.2);
 
                 int key = randomInt(min, max);
                 std::string action = std::string(1, randomChar());

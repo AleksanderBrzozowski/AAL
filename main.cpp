@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iostream>
 #include <unordered_map>
+#include <map>
+#include <tgmath.h>
 #include "OutTimerSkipList.h"
 #include "Simulation.h"
 #include "TimerSkipList.h"
@@ -22,6 +24,8 @@ void simpleSimulation(const int elements, int iterations);
 
 void simulate(BaseSkipList &skipList, int iterations);
 
+void tableSimulation(int elemets, int iterations, std::ofstream os);
+
 int main(int argc, char *argv[]) {
     srand((unsigned int) time(nullptr));
 
@@ -37,8 +41,8 @@ int main(int argc, char *argv[]) {
         for (int i = 1; i < argc; ++i) {
             std::string value(argv[i]);
             if (isOption) {
-                if (value == "-t") {
-                    options.insert(std::pair<std::string, std::string>("-t", ""));
+                if (value == "-time" || value == "-table") {
+                    options.insert(std::pair<std::string, std::string>(value, ""));
                     continue;
                 }
                 option = value;
@@ -50,15 +54,20 @@ int main(int argc, char *argv[]) {
 
         int elements = options.count("-e") ? std::stoi((*options.find("-e")).second) : ELEMENTS_SIZE;
         int iterations = options.count("-i") ? std::stoi((*options.find("-i")).second) : ITERATIONS;
-        bool isExtended = options.count("-t") > 1;
+        bool isExtended = options.count("-time") > 0;
 
-        if (options.count("-o")) {
+
+        if(options.count("-table")){
+            std::ofstream os(((*options.find("-table")).second));
+            tableSimulation(elements, iterations, os);
+            os.close();
+        }
+        else if (options.count("-o")) {
             std::ofstream os((*options.find("-o")).second);
             outputExtendedSimulation(elements, os, iterations);
             os.close();
-        } else {
+        } else
             isExtended ? simpleSimulation(elements, iterations) : extendedSimulation(elements, iterations);
-        }
     }
 
     return 0;
@@ -110,5 +119,28 @@ unsigned int calculateSkipListLevel(int elements) {
         ++level;
     }
     return level;
+}
+
+void tableSimulation(int elements, int iterations, std::ofstream os) {
+    std::map<int, double> results;
+    for (int i = 16000; i <= elements; i *= 2) {
+        SkipList skipList(0.5F, calculateSkipListLevel(i));
+        TimerSkipList timerSkipList(skipList);
+        Simulation::generateActions(skipList, i);
+        Simulation simulation(timerSkipList, std::cout, iterations);
+        simulation.run();
+        results.insert(std::pair<int, double>(i, timerSkipList.getAverageInsertOrUpdateTime()));
+    }
+
+    if (results.size() > 1) {
+        std::pair<int, double> pair = *(++results.rbegin());
+        double c = pair.second / log(pair.first);
+        for(std::pair<const int, double> & result : results)
+            os << result.first << " " << result.second << " " << result.second / (c * log(result.first)) << std::endl;
+    }
+
+
+    os.close();
+
 }
 

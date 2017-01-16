@@ -24,7 +24,7 @@ void simpleSimulation(const int elements, int iterations);
 
 void simulate(BaseSkipList &skipList, int iterations);
 
-void tableSimulation(int elements, int iterations, std::ofstream os);
+void tableSimulation(int elements, int iterations, std::ofstream& os);
 
 int main(int argc, char *argv[]) {
     srand((unsigned int) time(nullptr));
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
         for (int i = 1; i < argc; ++i) {
             std::string value(argv[i]);
             if (isOption) {
-                if (value == "-time" || value == "-table") {
+                if (value == "-time") {
                     options.insert(std::pair<std::string, std::string>(value, ""));
                     continue;
                 }
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
             outputExtendedSimulation(elements, os, iterations);
             os.close();
         } else
-            isExtended ? simpleSimulation(elements, iterations) : extendedSimulation(elements, iterations);
+            isExtended ? extendedSimulation(elements, iterations) : simpleSimulation(elements, iterations);
     }
 
     return 0;
@@ -121,7 +121,7 @@ unsigned int calculateSkipListLevel(int elements) {
     return level;
 }
 
-void tableSimulation(int elements, int iterations, std::ofstream os) {
+void tableSimulation(int elements, int iterations, std::ofstream& os) {
     std::map<int, double> results;
     for (int i = 16000; i <= elements; i *= 2) {
         SkipList skipList(0.5F, calculateSkipListLevel(i));

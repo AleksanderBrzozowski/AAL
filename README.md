@@ -1,6 +1,6 @@
 # AAL
 Projekt z analizy algorytmów - implementacja skip listy.
-Projekt na przedmiot ZPR
+Projekt na przedmiot AAL
 
 Autor: Aleksander Brzozowski
 
@@ -51,7 +51,7 @@ W terminalu:
 * mkdir build && cd build  # stworzenie i przejście do katalogu build
 * cmake ../  # uruchomienie CMake
 * make  # kompilacja i konsolidacja projektu
-* ./Zpr_run  # uruchomienie programu
+* ./AAL  # uruchomienie programu
 
 Systemy Windows
 ---------------------------------------

@@ -24,7 +24,7 @@ void simpleSimulation(const int elements, int iterations);
 
 void simulate(BaseSkipList &skipList, int iterations);
 
-void tableSimulation(int elemets, int iterations, std::ofstream os);
+void tableSimulation(int elements, int iterations, std::ofstream os);
 
 int main(int argc, char *argv[]) {
     srand((unsigned int) time(nullptr));

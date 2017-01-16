@@ -36,8 +36,8 @@ void Simulation::run() {
             if (iterationsCounter >= iterations)
                 break;
 
-            int min = skipList.getMinKey() + 1000;
-            int max = skipList.getMaxKey() + 1000;
+            int min = skipList.getMinKey() + range / 3;
+            int max = skipList.getMaxKey() + range / 3;
 
             int key = randomInt(min, max);
             std::string action = std::string(1, randomChar());

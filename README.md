@@ -57,8 +57,7 @@ Systemy Windows
 ---------------------------------------
 UWAGA!
 W miejsce $GENERATOR należy wstawić jakim kompilatorem będzie kompilowany
-projekt. Może to być istotne, gdyż domyślna architektura (x86) może być
-niezgodna z architekturą biblioteki Qt. Przykładową wartością w to miejsce
+projekt. Przykładową wartością w to miejsce
 może być "Visual Studio 14 2015 Win64".
 
 W środowisku Power Shell:
